@@ -1,3 +1,4 @@
+
 # PyQt5 Video player
 #!/usr/bin/env python
 
@@ -97,12 +98,12 @@ class videowindow(QtWidgets.QMainWindow):
         openAction = QAction(QIcon('open.png'), '&Open', self)        
         openAction.setShortcut('Ctrl+O')
         openAction.setStatusTip('Open movie')
-        filepath = "/home/moonsuelym/opencv/test_and_pencils.mp4"
+        filepath = "/home/moonsuelym/opencv/PlasticCup.mp4"
         self.mediaPlayer.setMedia(
                 QMediaContent(QUrl.fromLocalFile(filepath)))
         self.playButton.setEnabled(True)
         openAction.triggered.connect(self.openFile)
-        self.mediaPlayer.setPlaybackRate(8.0)
+        self.mediaPlayer.setPlaybackRate(1.0)
         self.mediaPlayer.play()
 
         # Create exit action
@@ -244,7 +245,6 @@ class MyWindow2(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         rospy.init_node('pyqt', anonymous=True)
-        self.pub = rospy.Publisher('TerminalToPyqt', String, queue_size=10)
         self.listener()
         self.central = QWidget(self)
         self.textbox = QTextEdit(self.central)
@@ -275,24 +275,59 @@ class MyWindow2(QMainWindow):
         exitAction.triggered.connect(self.close)
         self.fileMenu = self.mainMenu.addMenu('&File')
         self.fileMenu.addAction(exitAction)
-
+    
     def callback(self, data):
         if(data.data == "3"):
-            # self.change_stack()
+            self.change_stack()
             rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
 
     def listener(self):
         rospy.init_node('pyqt', anonymous=True)
         rospy.Subscriber('chatter', String, self.callback)
 
-    # def change_stack(self):
-    #     self.parent().stack.setCurrentIndex(0)
+    def change_stack(self):
+        self.parent().stack.setCurrentIndex(2)
+
+    def write(self, text):
+        self.text_update.emit(str(text))
+
+    def flush(self):
+        pass
 
     # def stack_reset(self):
     #     self.parent().stack.setCurrentIndex(2)
 
 
 #EOF
+class Thankyou(QtWidgets.QWidget):
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        # self.setStyleSheet(MAIN_COLOR)
+        self.listener()
+        # layout = QtWidgets.QVBoxLayout(self)
+        layout = QtWidgets.QHBoxLayout(self)
+
+        self.label = QtWidgets.QLabel("감사합니다",self)
+        # self.label.setAlignment(Qt.AlignCenter)
+        # self.label.setGeometry(500, 300, 800, 600) #(,down,,right)
+        # self.label.setAttribute(Qt.WA_TranslucentBackground, True) # 배경 투명
+        self.label.setFont(QFont('Arial', 30)) # 글자 폰트, 사이즈 수정
+        layout.addWidget(self.label)
+
+    # ros 메세지 받는 부분
+    def callback(self, data):
+        if(data.data == "1"):
+            self.change_stack()
+            rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+
+    def listener(self):
+        rospy.init_node('pyqt', anonymous=True)
+        rospy.Subscriber('chatter', String, self.callback)
+
+    def change_stack(self):
+        self.parent().stack.setCurrentIndex(1)
+
 
 
 class FirstWidget(QtWidgets.QWidget):
@@ -320,7 +355,8 @@ class FirstWidget(QtWidgets.QWidget):
         # )
         self.button.setStyleSheet("color : white;""background : black;""border:1px solid;""border-width :5px;""border-radius : 3px;")
         # self.button.QLineEdit("margin : 30px")
-        # self.button.clicked.connect(self.stack_reset)
+        self.button.clicked.connect(self.stack_reset)
+
         #  아니오버튼
         self.button2 = QtWidgets.QPushButton("아니오", self)
         self.button2.resize(100,200)
@@ -334,18 +370,21 @@ class FirstWidget(QtWidgets.QWidget):
     # ros 메세지 받는 부분
     def callback(self, data):
         if(data.data == "2"):
-            # self.stack_reset()
+            self.stack_reset1()
             rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
 
     def listener(self):
         rospy.init_node('pyqt', anonymous=True)
         rospy.Subscriber('chatter', String, self.callback)
 
-    # def change_stack(self):
-    #     self.parent().stack.setCurrentIndex()
+    def change_stack(self):
+        self.parent().stack.setCurrentIndex(1)
 
-    # def stack_reset(self):
-    #     self.parent().stack.setCurrentIndex(0)
+    def stack_reset(self):
+        self.parent().stack.setCurrentIndex(0)
+
+    def stack_reset1(self):
+        self.parent().stack.setCurrentIndex(3)
 
 
 
@@ -358,16 +397,19 @@ class MainWindow(QtWidgets.QWidget):
             except:
                 camera_num = 0
         self.stack = QtWidgets.QStackedLayout(self)
-        self.stack0 = FirstWidget(self)
+        # self.stack0 = FirstWidget(self)
+        # self.stack1 = videowindow(self)
+        # self.stack2 = MyWindow2(self)
+        self.stack0 = MyWindow2(self)
         self.stack1 = videowindow(self)
-        self.stack2 = MyWindow2(self)
-        # self.stack3 = VideoWindow2(self)
+        self.stack2 = FirstWidget(self)
+        self.stack3 = Thankyou(self)
         # print(self.stack2)
         
         self.stack.addWidget(self.stack0)
         self.stack.addWidget(self.stack1)
         self.stack.addWidget(self.stack2)
-        # self.stack.addWidget(self.stack3)
+        self.stack.addWidget(self.stack3)
         self.show()
 
 # app = QApplication(sys.argv)
