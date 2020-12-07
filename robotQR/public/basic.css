@@ -1,0 +1,28 @@
+div#app{
+    position: absolute;
+    top:10%;
+    left:50%;
+}
+.input{
+    width: 400px;
+    height: 250px;
+    border:1px solid #B2CCFF;
+    padding:20px;
+    /* margin: 0px auto; */
+}
+.input1{
+    
+}
+#name{
+    margin-bottom: 2%;
+    
+}
+#amout{
+    margin-bottom: 2%;
+}
+#buyer_tel{
+
+}
+#requestpay{
+
+}

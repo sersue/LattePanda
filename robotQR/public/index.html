@@ -11,16 +11,23 @@
     <!-- iamport.payment.js -->
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <title>import checkout</title>
+    <link rel="stylesheet" href="basic.css">
 </head>
+
 <body>
+
 <div id="app">
     <h1>지능형로봇 크러쉬랩 기부 결제창</h1>
-    
-    <input v-model="order.name" placeholder="상품명:기부">
-    <input v-model="order.amount" placeholder="기부금액:100원">
-    <input v-model="order.buyer_tel" placeholder="주문자 전화번호">
 
-    <button v-on:click="requestPay">결제 요청</button>
+    <div class = "input">
+        <div class="input1">
+            <input id = "name" v-model="order.name" placeholder="상품명:기부"> <br>
+            <input id = "amout" v-model="order.amount" placeholder="기부금액:100원"> <br>
+            <input id ="buyer_tel"v-model="order.buyer_tel" placeholder="주문자 전화번호">
+        </div>
+    
+    </div>
+    <button id="requestpay" v-on:click="requestPay">결제 요청</button>
 </div>
 
 </body>
