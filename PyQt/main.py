@@ -173,6 +173,8 @@ class videowindow(QtWidgets.QMainWindow):
         # print(self.mediaPlayer.mediaStatus())
         if(self.mediaPlayer.mediaStatus() == 7):
             self.mediaPlayer.play()
+            self.parent().stack.setCurrentIndex(4)
+
             print("end1")
         
         if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
@@ -328,7 +330,44 @@ class Thankyou(QtWidgets.QWidget):
     def change_stack(self):
         self.parent().stack.setCurrentIndex(1)
 
+class Donation(QtWidgets.QWidget):
 
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        # self.setStyleSheet(MAIN_COLOR)
+        self.listener()
+        # layout = QtWidgets.QVBoxLayout(self)
+        layout = QtWidgets.QHBoxLayout(self)
+
+        self.label = QtWidgets.QLabel("기부 해주세용",self)
+        # self.label.setAlignment(Qt.AlignCenter)
+        # self.label.setGeometry(500, 300, 800, 600) #(,down,,right)
+        # self.label.setAttribute(Qt.WA_TranslucentBackground, True) # 배경 투명
+        self.label.setFont(QFont('Arial', 30)) # 글자 폰트, 사이즈 수정
+        layout.addWidget(self.label)
+        self.button = QtWidgets.QPushButton("네", self)
+        self.button.resize(100,200)
+        self.button.setStyleSheet("color : white;""background : black;")
+        self.button2 = QtWidgets.QPushButton("아니오", self)
+        self.button2.resize(100,200)
+        self.button2.setStyleSheet("color : white;""background : black;")
+        self.text = QtWidgets.QTextEdit
+        layout.addWidget(self.label)
+        layout.addWidget(self.button)
+        layout.addWidget(self.button2)
+
+    # ros 메세지 받는 부분
+    def callback(self, data):
+        if(data.data == "1"):
+            self.change_stack()
+            rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+
+    def listener(self):
+        rospy.init_node('pyqt', anonymous=True)
+        rospy.Subscriber('chatter', String, self.callback)
+
+    def change_stack(self):
+        self.parent().stack.setCurrentIndex(1)
 
 class FirstWidget(QtWidgets.QWidget):
 
@@ -404,12 +443,14 @@ class MainWindow(QtWidgets.QWidget):
         self.stack1 = videowindow(self)
         self.stack2 = FirstWidget(self)
         self.stack3 = Thankyou(self)
+        self.stack4 = Donation(self)
         # print(self.stack2)
         
         self.stack.addWidget(self.stack0)
         self.stack.addWidget(self.stack1)
         self.stack.addWidget(self.stack2)
         self.stack.addWidget(self.stack3)
+        self.stack.addWidget(self.stack4)
         self.show()
 
 # app = QApplication(sys.argv)
