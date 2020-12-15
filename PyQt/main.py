@@ -558,25 +558,21 @@ class videowindow3(QtWidgets.QMainWindow):
     def change_stack(self):
         self.parent().stack.setCurrentIndex(2)
  
-
-     
-def listener(self):
+    def listener(self):
         rospy.Subscriber('TerminalToPyqt', String, self.callback)
 
-  
+    def positionChanged(self, position):
+        self.positionSlider.setValue(position)
 
-def positionChanged(self, position):
-    self.positionSlider.setValue(position)
+    def durationChanged(self, duration):
+        self.positionSlider.setRange(0, duration)
 
-def durationChanged(self, duration):
-    self.positionSlider.setRange(0, duration)
+    def setPosition(self, position):
+        self.mediaPlayer.setPosition(position)
 
-def setPosition(self, position):
-    self.mediaPlayer.setPosition(position)
-
-def handleError(self):
-    self.playButton.setEnabled(False)
-    self.errorLabel.setText("Error: " + self.mediaPlayer.errorString())
+    def handleError(self):
+        self.playButton.setEnabled(False)
+        self.errorLabel.setText("Error: " + self.mediaPlayer.errorString())
     
     
 
