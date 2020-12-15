@@ -1,16 +1,28 @@
 import rospy
 from std_msgs.msg import String
 
+
+
 def callback(data):
-    if(data.data=="chatter"):
-        print("Get Message: chatter")
-    # elif(data.data==""):
-    #     print("Get Message: ")
+    if(data.data=="2"):
+        pub1 = rospy.Publisher('TerminalToPyqt',String,queue_size=10)
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        rospy.sleep(0.5)
+        pub1.publish("0")
+        rospy.loginfo('I published 0')
+    elif(data.data=="ha"):
+        pub1 = rospy.Publisher('TerminalToPyqt1',String,queue_size=10)
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        rospy.sleep(0.5)
+        pub1.publish("4")
+        rospy.loginfo('I published 4')
     else:
         print("Get Message: error ")
 
 def listener():
+    
     rospy.Subscriber('TerminalToPyqt',String,callback)
+    rospy.Subscriber('TerminalToPyqt1',String,callback)
 
 def talker():
     pub = rospy.Publisher('chatter',String,queue_size=10)
@@ -22,10 +34,10 @@ def talker():
         print("##############")
         print("1: 화면 변경")
         key = int(input('input number :'))
-        if(key ==0):
-            hello_str="0"
-            rospy.loginfo(hello_str)
-            pub.publish(hello_str)
+        # if(key ==0):
+        #     hello_str="0"
+        #     rospy.loginfo(hello_str)
+        #     pub.publish(hello_str)
         if(key ==1):
             hello_str="1"
             rospy.loginfo(hello_str)
@@ -46,6 +58,8 @@ def talker():
             hello_str="5"
             rospy.loginfo(hello_str)
             pub.publish(hello_str)
+        
+
         else:
             print("not accessed message")
 
@@ -54,7 +68,3 @@ if __name__ =='__main__':
         talker()
     except rospy.ROSInterruptException:
         pass
-        
-
-
-        
