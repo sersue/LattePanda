@@ -565,18 +565,18 @@ def listener(self):
 
   
 
-    def positionChanged(self, position):
-        self.positionSlider.setValue(position)
+def positionChanged(self, position):
+    self.positionSlider.setValue(position)
 
-    def durationChanged(self, duration):
-        self.positionSlider.setRange(0, duration)
+def durationChanged(self, duration):
+    self.positionSlider.setRange(0, duration)
 
-    def setPosition(self, position):
-        self.mediaPlayer.setPosition(position)
+def setPosition(self, position):
+    self.mediaPlayer.setPosition(position)
 
-    def handleError(self):
-        self.playButton.setEnabled(False)
-        self.errorLabel.setText("Error: " + self.mediaPlayer.errorString())
+def handleError(self):
+    self.playButton.setEnabled(False)
+    self.errorLabel.setText("Error: " + self.mediaPlayer.errorString())
     
     
 
