@@ -105,7 +105,7 @@ class videowindow(QtWidgets.QMainWindow):
         openAction = QAction(QIcon('open.png'), '&Open', self)        
         openAction.setShortcut('Ctrl+O')
         openAction.setStatusTip('Open movie')
-        filepath = "/home/moonsuelym/opencv/PlasticCup.mp4"
+        filepath = "/home/moonsuelym/opencv/default_screen.mp4"
         self.mediaPlayer.setMedia(
                 QMediaContent(QUrl.fromLocalFile(filepath)))
         self.playButton.setEnabled(True)
@@ -154,7 +154,7 @@ class videowindow(QtWidgets.QMainWindow):
 
     def openFile(self):
         print("openfile")
-        fileName, _ = QFileDialog.getOpenFileName(self, "PlasticCup.mp4",
+        fileName, _ = QFileDialog.getOpenFileName(self, "default_screen.mp4",
                 QDir.homePath())
         print(fileName)
 
@@ -209,9 +209,9 @@ class videowindow(QtWidgets.QMainWindow):
 
     def change_stack(self):
         self.parent().stack.setCurrentIndex(1)
-        msg = "ha"
+        msg = "hi"
         self.pub.publish(msg)
-        rospy.loginfo('I published ha')
+        rospy.loginfo('I published hi')
 
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
@@ -281,7 +281,7 @@ class videowindow2(QtWidgets.QMainWindow):
         openAction = QAction(QIcon('open.png'), '&Open', self)        
         openAction.setShortcut('Ctrl+O')
         openAction.setStatusTip('Open movie')
-        filepath = "/home/moonsuelym/opencv/PlasticCup.mp4"
+        filepath = "/home/moonsuelym/opencv/movie/introduce_pandaself/introduce.mp4"
         self.mediaPlayer.setMedia(
                 QMediaContent(QUrl.fromLocalFile(filepath)))
         self.playButton.setEnabled(True)
@@ -373,7 +373,7 @@ class videowindow2(QtWidgets.QMainWindow):
                     self.style().standardIcon(QStyle.SP_MediaPlay))
 
     def callback(self, data):
-        if(data.data == "4"):
+        if(data.data == "hi1"):
             self.mediaPlayer.play()
             rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
             self.mediaPlayer.stateChanged.connect(self.mediaStateChanged2)
@@ -455,7 +455,7 @@ class videowindow3(QtWidgets.QMainWindow):
         openAction = QAction(QIcon('open.png'), '&Open', self)        
         openAction.setShortcut('Ctrl+O')
         openAction.setStatusTip('Open movie')
-        filepath = "/home/moonsuelym/opencv/PlasticCup.mp4"
+        filepath = "/home/moonsuelym/opencv/movie/poor_panda/poor_panda.mp4"
         self.mediaPlayer.setMedia(
                 QMediaContent(QUrl.fromLocalFile(filepath)))
         self.playButton.setEnabled(True)
@@ -504,7 +504,7 @@ class videowindow3(QtWidgets.QMainWindow):
 
     def openFile(self):
         print("openfile")
-        fileName, _ = QFileDialog.getOpenFileName(self, "PlasticCup.mp4",
+        fileName, _ = QFileDialog.getOpenFileName(self, "poor_panda.mp4",
                 QDir.homePath())
         print(fileName)
 
@@ -557,9 +557,12 @@ class videowindow3(QtWidgets.QMainWindow):
             
     def change_stack(self):
         self.parent().stack.setCurrentIndex(2)
- 
+        
+
     def listener(self):
         rospy.Subscriber('TerminalToPyqt', String, self.callback)
+
+  
 
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
@@ -629,7 +632,7 @@ class videowindow4(QtWidgets.QMainWindow):
         openAction = QAction(QIcon('open.png'), '&Open', self)        
         openAction.setShortcut('Ctrl+O')
         openAction.setStatusTip('Open movie')
-        filepath = "/home/moonsuelym/opencv/PlasticCup.mp4"
+        filepath = "/home/moonsuelym/opencv/movie/poor_panda/poor_panda.mp4"
         self.mediaPlayer.setMedia(
                 QMediaContent(QUrl.fromLocalFile(filepath)))
         self.playButton.setEnabled(True)
@@ -678,7 +681,7 @@ class videowindow4(QtWidgets.QMainWindow):
 
     def openFile(self):
         print("openfile")
-        fileName, _ = QFileDialog.getOpenFileName(self, "PlasticCup.mp4",
+        fileName, _ = QFileDialog.getOpenFileName(self, "poor_panda.mp4",
                 QDir.homePath())
         print(fileName)
 
@@ -703,7 +706,7 @@ class videowindow4(QtWidgets.QMainWindow):
     def mediaStateChanged4(self, state):
         print("enter mediastatechagned")
         print(self.mediaPlayer.mediaStatus())
-        rospy.loginfo('mediaStatus3 %s', self.mediaPlayer.mediaStatus())
+        rospy.loginfo('mediaStatus4 %s', self.mediaPlayer.mediaStatus())
 
         if(self.mediaPlayer.mediaStatus() == 7):
             self.mediaPlayer.stop()
@@ -726,15 +729,14 @@ class videowindow4(QtWidgets.QMainWindow):
             self.mediaPlayer.play()
             rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
             self.mediaPlayer.stateChanged.connect(self.mediaStateChanged4)
-        # elif(data.data=="l"):
-        #     self.change_stack()
+       
             
     def change_stack(self):
         self.parent().stack.setCurrentIndex(2)
         
 
     def listener(self):
-        rospy.Subscriber('TerminalToPyqt', String, self.callback)
+        rospy.Subscriber('TerminalToPyqt1', String, self.callback)
 
   
 
@@ -777,6 +779,363 @@ def grab_images(cam_num, queue):
             break
     cap.release()
 
+class videowindow5(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(videowindow5, self).__init__(parent)
+        self.setWindowTitle("PyQt Video Player Widget Example - pythonprogramminglanguage.com") 
+       
+        self.listener()
+        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+
+        videoWidget = QVideoWidget()
+
+        self.playButton = QPushButton()
+        self.playButton.setEnabled(False)
+        self.playButton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
+        self.playButton.clicked.connect(self.play)
+        self.pub = rospy.Publisher('TerminalToPyqt', String, queue_size=10)
+
+        self.positionSlider = QSlider(Qt.Horizontal)
+        self.positionSlider.setRange(0, 0)
+        self.positionSlider.sliderMoved.connect(self.setPosition)
+
+        self.errorLabel = QLabel()
+        self.errorLabel.setSizePolicy(QSizePolicy.Preferred,
+                QSizePolicy.Maximum)
+
+        # Create new action
+        openAction = QAction(QIcon('open.png'), '&Open', self)        
+        openAction.setShortcut('Ctrl+O')
+        openAction.setStatusTip('Open movie')
+        filepath = "/home/moonsuelym/opencv/movie/steamer_panda/donation.mp4"
+        self.mediaPlayer.setMedia(
+                QMediaContent(QUrl.fromLocalFile(filepath)))
+        self.playButton.setEnabled(True)
+        openAction.triggered.connect(self.openFile)
+        self.mediaPlayer.setPlaybackRate(1.0)
+        # self.mediaPlayer.play()
+
+        # Create exit action
+        exitAction = QAction(QIcon('exit.png'), '&Exit', self)        
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Exit application')
+        exitAction.triggered.connect(self.exitCall)
+
+        # Create menu bar and add action
+        # menuBar = self.menuBar()
+        # fileMenu = menuBar.addMenu('&File')
+        # #fileMenu.addAction(newAction)
+        # fileMenu.addAction(openAction)
+        # fileMenu.addAction(exitAction)
+
+        # Create a widget for window contents
+        wid = QWidget(self)
+        self.setCentralWidget(wid)
+
+        # Create layouts to place inside widget
+        controlLayout = QHBoxLayout()
+        controlLayout.setContentsMargins(0, 0, 0, 0)
+        # controlLayout.addWidget(self.playButton)
+        # controlLayout.addWidget(self.positionSlider)
+
+        layout = QVBoxLayout()
+        layout.addWidget(videoWidget)
+        layout.addLayout(controlLayout)
+        layout.addWidget(self.errorLabel)
+
+        # Set widget to contain window contents
+        wid.setLayout(layout)
+
+        self.mediaPlayer.setVideoOutput(videoWidget)
+        # self.mediaPlayer.stateChanged.connect(self.mediaStateChanged)
+        self.mediaPlayer.positionChanged.connect(self.positionChanged)
+        self.mediaPlayer.durationChanged.connect(self.durationChanged)
+        self.mediaPlayer.error.connect(self.handleError)
+
+
+
+    def openFile(self):
+        print("openfile")
+        fileName, _ = QFileDialog.getOpenFileName(self, "steamer_panda.mp4",
+                QDir.homePath())
+        print(fileName)
+
+        if fileName != '':
+            self.mediaPlayer.setMedia(
+                    QMediaContent(QUrl.fromLocalFile(fileName)))
+            self.playButton.setEnabled(True)
+        print("openfile end")
+
+    def exitCall(self):
+        print("end video")
+        # self.mediaPlayer.play()
+        # self.parent().stack.setCurrentIndex(4)
+        # sys.exit(app.exec_())
+
+    def play(self):
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.mediaPlayer.pause()
+        else:
+            self.mediaPlayer.play()
+
+    def mediaStateChanged5(self, state):
+        print("enter mediastatechagned")
+        print(self.mediaPlayer.mediaStatus())
+        rospy.loginfo('mediaStatus5 %s', self.mediaPlayer.mediaStatus())
+
+        if(self.mediaPlayer.mediaStatus() == 7):
+            self.mediaPlayer.stop()
+            self.parent().stack.setCurrentIndex(10)
+            msg = "last"
+            self.pub.publish(msg)
+            rospy.loginfo('I published lastvideo')
+
+
+        else: 
+            self.mediaPlayer.play()
+            
+        
+
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.playButton.setIcon(
+                    self.style().standardIcon(QStyle.SP_MediaPause))
+        else:
+            self.playButton.setIcon(
+                    self.style().standardIcon(QStyle.SP_MediaPlay))
+
+    def callback(self, data):
+        if(data.data =="6"):
+            self.mediaPlayer.play()
+            rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+            self.mediaPlayer.stateChanged.connect(self.mediaStateChanged5)
+   
+
+    def listener(self):
+        rospy.Subscriber('TerminalToPyqt1', String, self.callback)
+
+  
+
+    def positionChanged(self, position):
+        self.positionSlider.setValue(position)
+
+    def durationChanged(self, duration):
+        self.positionSlider.setRange(0, duration)
+
+    def setPosition(self, position):
+        self.mediaPlayer.setPosition(position)
+
+    def handleError(self):
+        self.playButton.setEnabled(False)
+        self.errorLabel.setText("Error: " + self.mediaPlayer.errorString())
+    
+    
+
+
+   
+# Grab images from the camera (separate thread)
+def grab_images(cam_num, queue):
+    cap = cv2.VideoCapture(cam_num-1 +CAP_API)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, IMG_SIZE[0])
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, IMG_SIZE[1])
+    if EXPOSURE:
+        cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
+        cap.set(cv2.CAP_PROP_EXPOSURE, EXPOSURE)
+    else:
+        cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+    while capturing:
+        if cap.grab():
+            retval, image = cap.retrieve(0)
+            if image is not None and queue.qsize() < 2:
+                queue.put(image)
+            else:
+                time.sleep(DISP_MSEC / 1000.0)
+        else:
+            print("Error: can't grab camera image")
+            break
+    cap.release()
+
+class videowindow6(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(videowindow6, self).__init__(parent)
+        self.setWindowTitle("PyQt Video Player Widget Example - pythonprogramminglanguage.com") 
+       
+        self.listener()
+        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+
+        videoWidget = QVideoWidget()
+
+        self.playButton = QPushButton()
+        self.playButton.setEnabled(False)
+        self.playButton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
+        self.playButton.clicked.connect(self.play)
+        self.pub = rospy.Publisher('TerminalToPyqt', String, queue_size=10)
+
+        self.positionSlider = QSlider(Qt.Horizontal)
+        self.positionSlider.setRange(0, 0)
+        self.positionSlider.sliderMoved.connect(self.setPosition)
+
+        self.errorLabel = QLabel()
+        self.errorLabel.setSizePolicy(QSizePolicy.Preferred,
+                QSizePolicy.Maximum)
+
+        # Create new action
+        openAction = QAction(QIcon('open.png'), '&Open', self)        
+        openAction.setShortcut('Ctrl+O')
+        openAction.setStatusTip('Open movie')
+        filepath = "/home/moonsuelym/opencv/default_screen.mp4"
+        self.mediaPlayer.setMedia(
+                QMediaContent(QUrl.fromLocalFile(filepath)))
+        self.playButton.setEnabled(True)
+        openAction.triggered.connect(self.openFile)
+        self.mediaPlayer.setPlaybackRate(1.0)
+        # self.mediaPlayer.play()
+
+        # Create exit action
+        exitAction = QAction(QIcon('exit.png'), '&Exit', self)        
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Exit application')
+        exitAction.triggered.connect(self.exitCall)
+
+        # Create menu bar and add action
+        # menuBar = self.menuBar()
+        # fileMenu = menuBar.addMenu('&File')
+        # #fileMenu.addAction(newAction)
+        # fileMenu.addAction(openAction)
+        # fileMenu.addAction(exitAction)
+
+        # Create a widget for window contents
+        wid = QWidget(self)
+        self.setCentralWidget(wid)
+
+        # Create layouts to place inside widget
+        controlLayout = QHBoxLayout()
+        controlLayout.setContentsMargins(0, 0, 0, 0)
+        # controlLayout.addWidget(self.playButton)
+        # controlLayout.addWidget(self.positionSlider)
+
+        layout = QVBoxLayout()
+        layout.addWidget(videoWidget)
+        layout.addLayout(controlLayout)
+        layout.addWidget(self.errorLabel)
+
+        # Set widget to contain window contents
+        wid.setLayout(layout)
+
+        self.mediaPlayer.setVideoOutput(videoWidget)
+        # self.mediaPlayer.stateChanged.connect(self.mediaStateChanged)
+        self.mediaPlayer.positionChanged.connect(self.positionChanged)
+        self.mediaPlayer.durationChanged.connect(self.durationChanged)
+        self.mediaPlayer.error.connect(self.handleError)
+
+
+
+    def openFile(self):
+        print("openfile")
+        fileName, _ = QFileDialog.getOpenFileName(self, "default_screen.mp4",
+                QDir.homePath())
+        print(fileName)
+
+        if fileName != '':
+            self.mediaPlayer.setMedia(
+                    QMediaContent(QUrl.fromLocalFile(fileName)))
+            self.playButton.setEnabled(True)
+        print("openfile end")
+
+    def exitCall(self):
+        print("end video")
+        # self.mediaPlayer.play()
+        # self.parent().stack.setCurrentIndex(4)
+        # sys.exit(app.exec_())
+
+    def play(self):
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.mediaPlayer.pause()
+        else:
+            self.mediaPlayer.play()
+
+    def mediaStateChanged6(self, state):
+        print("enter mediastatechagned")
+        print(self.mediaPlayer.mediaStatus())
+        rospy.loginfo('mediaStatus6 %s', self.mediaPlayer.mediaStatus())
+
+        if(self.mediaPlayer.mediaStatus() == 7):
+            self.mediaPlayer.stop()
+            msg = "end"
+            self.pub.publish(msg)
+            rospy.loginfo('I published end')
+
+        else: 
+            self.mediaPlayer.play()
+            
+        
+
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.playButton.setIcon(
+                    self.style().standardIcon(QStyle.SP_MediaPause))
+        else:
+            self.playButton.setIcon(
+                    self.style().standardIcon(QStyle.SP_MediaPlay))
+
+    def callback(self, data):
+        if(data.data =="7"):
+            self.mediaPlayer.play()
+            rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+            self.mediaPlayer.stateChanged.connect(self.mediaStateChanged6)
+        elif(data.data =="lastvideo1"):
+            self.mediaPlayer.play()
+            rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+            self.mediaPlayer.stateChanged.connect(self.mediaStateChanged6)
+        else:
+            pass
+
+        
+        
+
+    def listener(self):
+        rospy.Subscriber('TerminalToPyqt1', String, self.callback)
+
+  
+
+    def positionChanged(self, position):
+        self.positionSlider.setValue(position)
+
+    def durationChanged(self, duration):
+        self.positionSlider.setRange(0, duration)
+
+    def setPosition(self, position):
+        self.mediaPlayer.setPosition(position)
+
+    def handleError(self):
+        self.playButton.setEnabled(False)
+        self.errorLabel.setText("Error: " + self.mediaPlayer.errorString())
+    
+    
+
+
+   
+# Grab images from the camera (separate thread)
+def grab_images(cam_num, queue):
+    cap = cv2.VideoCapture(cam_num-1 +CAP_API)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, IMG_SIZE[0])
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, IMG_SIZE[1])
+    if EXPOSURE:
+        cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
+        cap.set(cv2.CAP_PROP_EXPOSURE, EXPOSURE)
+    else:
+        cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+    while capturing:
+        if cap.grab():
+            retval, image = cap.retrieve(0)
+            if image is not None and queue.qsize() < 2:
+                queue.put(image)
+            else:
+                time.sleep(DISP_MSEC / 1000.0)
+        else:
+            print("Error: can't grab camera image")
+            break
+    cap.release()
 # Image widget
 class ImageWidget(QWidget):
     def __init__(self, parent=None):
@@ -912,45 +1271,7 @@ class Thankyou(QtWidgets.QWidget):
     def change_stack(self):
         self.parent().stack.setCurrentIndex(2)
 
-class Donation(QtWidgets.QWidget):
 
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        # self.setStyleSheet(MAIN_COLOR)
-        # self.listener()
-        # layout = QtWidgets.QVBoxLayout(self)
-        layout = QtWidgets.QHBoxLayout(self)
-
-        self.label = QtWidgets.QLabel("기부 해주세용",self)
-        # self.label.setAlignment(Qt.AlignCenter)
-        # self.label.setGeometry(500, 300, 800, 600) #(,down,,right)
-        # self.label.setAttribute(Qt.WA_TranslucentBackground, True) # 배경 투명
-        self.label.setFont(QFont('Arial', 30)) # 글자 폰트, 사이즈 수정
-        self.button = QtWidgets.QPushButton("네", self)
-        self.button.resize(100,200)
-        self.button.setStyleSheet("color : white;""background : black;")
-
-        self.button2 = QtWidgets.QPushButton("아니오", self)
-        self.button2.resize(100,200)
-        self.button2.setStyleSheet("color : white;""background : black;")
-        self.text = QtWidgets.QTextEdit
-
-        layout.addWidget(self.label)
-        layout.addWidget(self.button)
-        layout.addWidget(self.button2)
-
-    # ros 메세지 받는 부분
-    def callback(self, data):
-        if(data.data == "1"):
-            self.change_stack()
-            rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-
-    def listener(self):
-        
-        rospy.Subscriber('chatter', String, self.callback)
-
-    def change_stack(self):
-        self.parent().stack.setCurrentIndex(1)
 
 class FirstWidget(QtWidgets.QWidget):
 
@@ -975,7 +1296,8 @@ class FirstWidget(QtWidgets.QWidget):
         self.label.resize(30,30)
         pixmap=QPixmap("help1.png")
         self.label.setPixmap(QPixmap(pixmap))
-       
+        self.label.resize(300,300)
+        
 
         self.button = QtWidgets.QPushButton("네", self)
         self.button.resize(100,200)
@@ -1016,7 +1338,7 @@ class FirstWidget(QtWidgets.QWidget):
         self.parent().stack.setCurrentIndex(3)
         msg = "2"
         self.pub.publish(msg)
-        rospy.loginfo('I published')
+        rospy.loginfo('I published 2')
 
 
 
@@ -1048,6 +1370,7 @@ class FirstWidget2(QtWidgets.QWidget):
         self.label.resize(30,30)
         pixmap=QPixmap("help1.png")
         self.label.setPixmap(QPixmap(pixmap))
+        pixmap=pixmap.scaled(200,200)
        
 
         self.button = QtWidgets.QPushButton("yes", self)
@@ -1067,7 +1390,7 @@ class FirstWidget2(QtWidgets.QWidget):
         self.button2 = QtWidgets.QPushButton("NO", self)
         self.button2.resize(100,200)
         self.button2.setStyleSheet("color : white;""background : black;")
-        # self.button2.clicked.connect(self.change_stack)
+        self.button2.clicked.connect(self.stack_reset)
 
 
         self.text = QtWidgets.QTextEdit
@@ -1075,8 +1398,7 @@ class FirstWidget2(QtWidgets.QWidget):
         layout.addWidget(self.button)
         layout.addWidget(self.button2)
 
-     
-# ros 메세지 받는 부분
+    # ros 메세지 받는 부분
     def callback(self, data):
         if(data.data == "p"):
             self.stack_reset1()
@@ -1091,11 +1413,61 @@ class FirstWidget2(QtWidgets.QWidget):
 
 
 
-    # def stack_reset(self):
-    #     self.parent().stack.setCurrentIndex(0)
+    def stack_reset(self):
+        self.parent().stack.setCurrentIndex(8)
+        msg = "nocup"
+        self.pub.publish(msg)
+        rospy.loginfo('I published nocup')
 
-    # def stack_reset1(self):
-    #     self.parent().stack.setCurrentIndex(3)
+class Donation1(QtWidgets.QWidget):
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        # self.setStyleSheet(MAIN_COLOR)
+        self.listener()
+        # rospy.spin()
+        # layout = QtWidgets.QVBoxLayout(self)
+        layout = QtWidgets.QHBoxLayout(self)
+        self.pub = rospy.Publisher('TerminalToPyqt', String, queue_size=10)
+        
+        
+        
+        self.label=QtWidgets.QLabel(self)
+        self.label.resize(30,30)
+        pixmap=QPixmap("help1.png")
+        self.label.setPixmap(QPixmap(pixmap))  
+        self.button = QtWidgets.QPushButton("다음", self)
+        self.button.resize(100,200)
+        self.button.setStyleSheet("color : white;""background : black;""border:1px solid;""border-width :5px;""border-radius : 3px;")
+        # self.button.QLineEdit("margin : 30px")
+        self.button.clicked.connect(self.change_stack)
+
+        layout.addWidget(self.label)
+        layout.addWidget(self.button)
+    
+    # ros 메세지 받는 부분
+    def callback(self, data):
+        if(data.data == "p"):
+            self.stack_reset1()
+            rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+
+    def listener(self):
+       
+        rospy.Subscriber('TerminalToPyqt1', String, self.callback)
+
+    def change_stack(self):
+        self.parent().stack.setCurrentIndex(8)
+        msg = "4"
+        self.pub.publish(msg)
+        rospy.loginfo('I published 4')
+
+
+
+    def stack_reset(self):
+        self.parent().stack.setCurrentIndex(0)
+
+    def stack_reset1(self):
+        self.parent().stack.setCurrentIndex(3)
 
 class FirstWidget3(QtWidgets.QWidget):
 
@@ -1106,7 +1478,7 @@ class FirstWidget3(QtWidgets.QWidget):
         # rospy.spin()
         # layout = QtWidgets.QVBoxLayout(self)
         layout = QtWidgets.QHBoxLayout(self)
-        self.pub = rospy.Publisher('TerminalToPyqt', String, queue_size=10)
+        self.pub = rospy.Publisher('TerminalToPyqt1', String, queue_size=10)
         
         
         
@@ -1133,7 +1505,7 @@ class FirstWidget3(QtWidgets.QWidget):
         self.button2 = QtWidgets.QPushButton("nooo", self)
         self.button2.resize(100,200)
         self.button2.setStyleSheet("color : white;""background : black;")
-        # self.button2.clicked.connect(self.change_stack)
+        self.button2.clicked.connect(self.stack_reset)
 
 
         self.text = QtWidgets.QTextEdit
@@ -1144,26 +1516,24 @@ class FirstWidget3(QtWidgets.QWidget):
     # ros 메세지 받는 부분
     def callback(self, data):
         if(data.data == "p"):
-            self.stack_reset1()
+            self.stack_reset()
             rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
 
     def listener(self):
        
-        rospy.Subscriber('chatter', String, self.callback)
+        rospy.Subscriber('TerminalToPyqt1', String, self.callback)
 
     def change_stack(self):
-        self.parent().stack.setCurrentIndex(3)
-        msg = "2"
-        self.pub.publish(msg)
-        rospy.loginfo('I published')
-
-
+        self.parent().stack.setCurrentIndex(9)
 
     def stack_reset(self):
-        self.parent().stack.setCurrentIndex(0)
+        self.parent().stack.setCurrentIndex(10)
+        msg = "donation"
+        self.pub.publish(msg)
+        rospy.loginfo('I published donation')
 
-    def stack_reset1(self):
-        self.parent().stack.setCurrentIndex(3)
+
+   
 
 
 class MainWindow(QtWidgets.QWidget):
@@ -1196,6 +1566,9 @@ class MainWindow(QtWidgets.QWidget):
         self.stack5 = MyWindow2(self)
         self.stack6 = videowindow4(self)
         self.stack7 = FirstWidget3(self)
+        self.stack8 = videowindow5(self)
+        self.stack9 = Donation1(self)
+        self.stack10 = videowindow6(self)
 
         
         
@@ -1207,6 +1580,9 @@ class MainWindow(QtWidgets.QWidget):
         self.stack.addWidget(self.stack5)
         self.stack.addWidget(self.stack6)
         self.stack.addWidget(self.stack7)
+        self.stack.addWidget(self.stack8)
+        self.stack.addWidget(self.stack9)
+        self.stack.addWidget(self.stack10)
 
         self.show()
 
