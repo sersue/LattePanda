@@ -10,12 +10,36 @@ def callback(data):
         rospy.sleep(0.5)
         pub1.publish("0")
         rospy.loginfo('I published 0')
-    elif(data.data=="ha"):
+    elif(data.data=="hi"):
         pub1 = rospy.Publisher('TerminalToPyqt1',String,queue_size=10)
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         rospy.sleep(0.5)
-        pub1.publish("4")
+        pub1.publish("hi1")
         rospy.loginfo('I published 4')
+    elif(data.data=="nocup"):
+        pub1 = rospy.Publisher('TerminalToPyqt1',String,queue_size=10)
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        rospy.sleep(0.5)
+        pub1.publish("5")
+        rospy.loginfo('I published 5')
+    elif(data.data=="4"):
+        pub1 = rospy.Publisher('TerminalToPyqt1',String,queue_size=10)
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        rospy.sleep(0.5)
+        pub1.publish("6")
+        rospy.loginfo('I published 6')
+    elif(data.data=="donation"):
+        pub1 = rospy.Publisher('TerminalToPyqt1',String,queue_size=10)
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        rospy.sleep(0.5)
+        pub1.publish("7")
+        rospy.loginfo('I published 7')
+    elif(data.data=="lastvideo"):
+        pub1 = rospy.Publisher('TerminalToPyqt1',String,queue_size=10)
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        rospy.sleep(0.5)
+        pub1.publish("lastvideo1")
+        rospy.loginfo('I published lastvideo1')   
     else:
         print("Get Message: error ")
 
@@ -67,4 +91,7 @@ if __name__ =='__main__':
     try:
         talker()
     except rospy.ROSInterruptException:
-        pass
+        pass        
+
+
+        
