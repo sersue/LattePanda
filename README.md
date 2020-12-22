@@ -40,7 +40,7 @@
 
 ## Role
 |Name|Main Role|
-|------|---|---|
+|------|---|
 |정석훈|Team Leader, Human Detection|
 |김동호|Robot Hardware 설계|
 |문수림|ROS Software Architecture Design, UI (PyQt5)|
