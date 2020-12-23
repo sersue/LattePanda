@@ -1,0 +1,36 @@
+delay : 1000
+---
+cmd : 100
+ID_3 : 376
+ID_4 : 423
+delay : 1000
+---
+cmd : 100
+ID_4 : 529
+delay : 1000
+---
+cmd : 100
+ID_3 : 290
+delay : 800
+---
+cmd : 100
+ID_3 : 460
+delay : 800
+---
+cmd : 100
+ID_3 : 300
+delay : 800
+---
+cmd : 100
+ID_3 : 450
+delay : 800
+---
+cmd : 100
+ID_3 : 376
+ID_4 : 423
+delay : 1000
+---
+### ID 1  // min : 530 , max : 830
+### ID 2  // min : 350 , max : 640
+### ID 3  // min : 190 , max : 520
+### ID 4  // min : 380 , max : 750
